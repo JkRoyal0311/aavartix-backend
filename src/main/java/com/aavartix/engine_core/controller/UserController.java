@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
@@ -20,14 +19,12 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody UserRegistrationRequest request) {
+    public ResponseEntity<String> registerUser(@RequestBody UserRegistrationRequest request) {
         try {
-            User savedUser = userService.registerUser(request);
-            return ResponseEntity.ok(savedUser);
+            User newUser = userService.registerUser(request);
+            return ResponseEntity.ok("User registered successfully with ID: " + newUser.getId());
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("An error occurred during registration.");
         }
     }
 }
